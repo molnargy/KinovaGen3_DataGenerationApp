@@ -1,17 +1,23 @@
 import unittest
-from io import StringIO
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from kinova_movement_app.main import main
 
 
 class MainTests(unittest.TestCase):
-    def test_main_prints_ready_message(self) -> None:
-        output = StringIO()
-        with patch("sys.stdout", output):
-            main()
+    @patch("kinova_movement_app.main.MainWindow")
+    @patch("kinova_movement_app.main.QApplication")
+    def test_main_shows_the_window_and_starts_event_loop(
+        self, application_class: MagicMock, window_class: MagicMock
+    ) -> None:
+        application = application_class.return_value
+        application.exec.return_value = 0
 
-        self.assertEqual(output.getvalue(), "Kinova Movement App is ready.\n")
+        result = main()
+
+        window_class.return_value.show.assert_called_once_with()
+        application.exec.assert_called_once_with()
+        self.assertEqual(result, 0)
 
 
 if __name__ == "__main__":

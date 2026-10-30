@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "A Python application for Kinova movement projects."
 readme = "README.md"
 requires-python = ">=3.10"
+dependencies = ["PySide6>=6.5", "kortex-api>=2.6.0.post3"]
 
 [project.scripts]
 kinova-movement-app = "kinova_movement_app.main:main"
